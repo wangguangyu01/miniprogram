@@ -1,0 +1,105 @@
+<view class="page" data-weui-theme="{{theme}}">
+  <mp-form-page > 
+    <mp-form  id="form" rules="{{rules}}" models="{{formData}}">
+      <mp-cell show-error prop="name" title="微信号" ext-class="">
+        <input bindinput="formInputChange" data-field="name" name="name" class="weui-input" placeholder="请输入能添加的微信号" />
+      </mp-cell>
+      <!-- <mp-cell prop="qq" title="qq" ext-class="">
+          <input bindinput="formInputChange" data-field="qq" class="weui-input" placeholder="请输入qq" />
+        </mp-cell> -->
+      <mp-cell show-error prop="mobile" title="手机号" ext-class=" weui-cell_vcode">
+        <input bindinput="formInputChange" data-field="mobile" class="weui-input" placeholder="请输入手机号" />
+      </mp-cell>
+      <mp-cell prop="date" title="出生日期" ext-class="">
+        <picker picker mode="date" value="{{date}}" start="1900-01-01" end="3000-01-01" bindchange="bindDateChange">
+          <view class="weui-input">{{date}}</view>
+        </picker>
+      </mp-cell>
+
+      <!-- <mp-cell prop="vcode" title="验证码" ext-class=" weui-cell_vcode">
+          <input bindinput="formInputChange" data-field="vcode" class="weui-input" placeholder="请输入验证码" />
+          <image slot="footer" class="weui-vcode-img" src="../../images/vcode.jpg" style="width: 108px"></image>
+        </mp-cell> -->
+      <mp-cell prop="sex"  title="性别">
+        <radio-group data-field="sex" class="weui-input">
+          <label>
+            <radio value="男" checked="true"/>男
+          </label>
+          <label>
+            <radio value="女" />女
+          </label>
+        </radio-group>
+      </mp-cell>
+      <!-- <mp-cell ext-class="weui-cell_select weui-cell_select-after">
+        <view slot="title" class="weui-label">国家/地区</view>
+        <picker bindchange="bindCountryChange" value="{{countryIndex}}" range="{{countries}}">
+          <view class="weui-select">{{countries[countryIndex]}}</view>
+        </picker>
+      </mp-cell> -->
+      <mp-cell prop="region" title="所在地区">
+        <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
+          <view class="picker">
+            {{region[0]}}，{{region[1]}}，{{region[2]}}
+          </view>
+        </picker>
+      </mp-cell>
+      <!-- </mp-cells> -->
+      <!-- <mp-cells title="提交后表单项报错">
+        <mp-cell show-error prop="idcard" title="卡号" ext-class="">
+          <input bindinput="formInputChange" data-field="idcard" class="weui-input" placeholder="请输入卡号" />
+        </mp-cell>
+      </mp-cells> -->
+      <!-- <mp-cells title="开关">
+        <mp-cell title="标题文字" ext-class="">
+          <switch slot="footer" checked />
+        </mp-cell>
+      </mp-cells> -->
+      <!-- <mp-cells title="文本框">
+        <mp-cell title="标题文字" ext-class="">
+          <input class="weui-input" placeholder="请输入文本" />
+        </mp-cell>
+      </mp-cells> -->
+      <mp-cells title="个人介绍">
+        <mp-cell has-header="{{false}}" has-footer="{{false}}" title="" ext-class="">
+          <textarea name="personProfile" id="personProfile"  class="weui-textarea weui-input" placeholder="请输入个人介绍" style="height: 3.3em"/>
+          <view class="weui-textarea-counter">0/200</view>
+        </mp-cell>
+      </mp-cells>
+      <mp-cells title="择偶要求">
+        <mp-cell has-header="{{false}}" has-footer="{{false}}" title=""  ext-class="">
+          <textarea name="matingRequirement" id="matingRequirement"  class="weui-textarea weui-input" placeholder="请输择偶要求" style="height: 3.3em" />
+          <view class="weui-textarea-counter">0/200</view>
+        </mp-cell>
+      </mp-cells>
+      <!-- <mp-cells title="选择">
+        <mp-cell ext-class="weui-cell_select weui-cell_select-before">
+          <view slot="title" style="width: 105px">
+            <picker bindchange="bindCountryCodeChange" value="{{countryCodeIndex}}" range="{{countryCodes}}">
+              <view class="weui-select">{{countryCodes[countryCodeIndex]}}</view>
+            </picker>
+          </view>
+          <input class="weui-input" placeholder="请输入号码" />
+        </mp-cell>
+      </mp-cells> -->
+      <!-- <mp-cells title="选择">
+        <mp-cell has-header="{{false}}" ext-class="weui-cell_select">
+          <picker bindchange="bindAccountChange" value="{{accountIndex}}" range="{{accounts}}">
+            <view class="weui-select">{{accounts[accountIndex]}}</view>
+          </picker>
+        </mp-cell>
+      </mp-cells> -->
+    </mp-form>
+
+    <!-- <checkbox-group slot="tips" bindchange="bindAgreeChange">
+      <label class="weui-agree">
+        <checkbox class="weui-agree__checkbox-check" />
+        <text class="weui-agree__checkbox"></text>
+        <view class="weui-agree__text">阅读并同意<navigator>《相关条款》</navigator>
+        </view>
+      </label>
+    </checkbox-group> -->
+    <view slot="button">
+      <button class="weui-btn" type="primary" bindtap="submitForm">确定</button>
+    </view>
+  </mp-form-page>
+</view>

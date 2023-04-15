@@ -1,0 +1,38 @@
+<import src="../../../common/head.wxml" />
+<import src="../../../common/foot.wxml" />
+
+<view class="container page" data-weui-theme="{{theme}}">
+  <!-- <template is="head" data="{{title: 'createContext'}}"/> -->
+
+  <template is="head" data="{{title}}"/> 
+<!-- 
+  <view class="page-body">
+    <view class="page-section">
+      <canvas class="canvas-element" canvas-id="canvas"></canvas>
+      <scroll-view class="canvas-buttons" scroll-y="true">
+        <block wx:for="{{methods}}" wx:for-item="method">
+          <button class="canvas-button" bindtap="{{method}}">{{method}}</button>
+        </block>
+        <button class="canvas-button" bindtap="toTempFilePath" type="primary">toTempFilePath</button>
+      </scroll-view>
+    </view>
+  </view> -->
+  <view class="page-body" style="padding-left: 20px;">
+    <view bindtap="gotoRegister">
+      <rich-text nodes="{{content}}"></rich-text>
+    </view>
+    <view style="text-align:center;padding-top: 50px;">
+      <block wx:if="{{fileUrlArr != null && fileUrlArr.length > 0}}">
+        <view wx:for="{{fileUrlArr}}" wx:key="index" wx:for-item="itemUrl">
+          <image src="{{itemUrl}}" style="width: 60%;" mode="aspectFit"></image>
+        </view>
+      </block>
+      <block wx:if="{{moneyQRCode != null}}">
+        <view >
+          <image src="{{moneyQRCode}}" style="width: 60%;" mode="aspectFit"></image>
+        </view>
+      </block>
+    </view>
+  </view>
+  <template is="foot" />
+</view>

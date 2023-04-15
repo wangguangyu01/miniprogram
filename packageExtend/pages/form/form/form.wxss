@@ -1,0 +1,16 @@
+/* example/input/input.wxss */
+@import '../../common.wxss';
+
+.weui-agree .weui-agree__text {
+  display: inline;
+}
+.weui-form {
+  padding: 16px 10px;
+}
+.weui-form__control-area {
+  margin: 0;
+}
+
+.weui-cells__group_form:first-child .weui-cells__title{
+  margin-top: 30px;
+}

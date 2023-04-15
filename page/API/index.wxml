@@ -1,0 +1,55 @@
+<set-tab-bar wx:if="{{isSetTabBarPage}}" bindunmount="leaveSetTabBarPage"></set-tab-bar>
+<!-- <view wx:else class="index page" data-weui-theme="{{theme}}"> -->
+  <!-- <view class="index-hd">
+    <image class="index-logo" src="resources/kind/logo.png"></image>
+    <view class="index-desc">以下将演示小程序接口能力，具体属性参数详见 <navigator url="/page/component/pages/doc-web-view/doc-web-view" class="weui-agree__link">小程序开发文档</navigator>。</view>
+  </view> -->
+  <!-- <view class="index-bd">
+    <view class="kind-list">
+      <block wx:for-items="{{list}}" wx:key="{{item.id}}">
+        <view class="kind-list-item">
+          <view id="{{item.id}}" class="kind-list-item-hd {{item.open ? 'kind-list-item-hd-show' : ''}}" bindtap="kindToggle">
+            <view class="kind-list-text">{{item.name}}</view>
+            <image wx:if="{{theme === 'dark'}}" class="kind-list-img" src="resources/kind/{{item.id}}_dark.png"></image>
+            <image wx:else class="kind-list-img" src="resources/kind/{{item.id}}.png"></image>
+          </view>
+          <view class="kind-list-item-bd {{item.open ? 'kind-list-item-bd-show' : ''}}">
+            <view class="navigator-box {{item.open ? 'navigator-box-show' : ''}}">
+              <block wx:for-items="{{item.pages}}" wx:for-item="page" wx:key="*item">
+                <navigator url="../../packageAPI/pages/{{item.id}}/{{page.url}}" class="navigator" wx:if="{{page.url !== '@set-tab-bar'}}">
+                  <view class="navigator-text">{{page.zh}}</view>
+                  <view class="navigator-arrow"></view>
+                </navigator>
+                <view wx:else class="navigator" bindtap="enterSetTabBarPage">
+                  <view class="navigator-text">{{page.zh}}</view>
+                  <view class="navigator-arrow"></view>
+                </view>
+              </block>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view> -->
+<!-- </view> -->
+
+<view  style="width: 100%;  height: 100%;box-sizing: border-box;display: flex;" 
+bindtap="onReachBottom">
+  <grid-view type="masonry" cross-axis-count="1" style="width: 100%;" >
+    <view wx:for="{{arr}}" wx:key="index" style="display: flex;background-color: rgba(223, 190, 200, 0.658); justify-content:center; padding-top: 30px; width: 100%;" class="page-section" >
+      <navigator  url="../../packageAPI/pages/page/canvas/canvas?uuid={{item.uuid}}"  hover-class="other-navigator-hover" style="padding-bottom: 30px;" hover-class="none"  bindtap="getUserProfile">
+        <view>
+          <text >{{item.title}}</text>
+        </view>
+        <view class="page-body-text" >
+          <block wx:if="{{item.fileList != null}}">
+            <view wx:for="{{item.fileList}}" wx:key="index" wx:for-item="itemUrl">
+              <image wx:if="{{index == 0}}" src="{{itemUrl}}" style="width:100%;" mode="widthFix"></image>
+            </view>
+          </block>
+          <rich-text nodes="{{item.content}}"></rich-text>
+        </view>
+      </navigator>
+    </view>
+  </grid-view>
+</view>

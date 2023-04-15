@@ -1,0 +1,25 @@
+<import src="../../../common/head.wxml" />
+<import src="../../../common/foot.wxml" />
+
+<view class="container page">
+  <template is="head" data="{{title}}" />
+  <view class="page-body" style="padding-left: 20px;">
+    <view class="page-section">
+      <view class="flex-wrp">
+        <text>{{title}}</text>
+      </view>
+    </view>
+    <view>
+      <rich-text nodes="{{content}}"></rich-text>
+    </view>
+    <view style="text-align:center;padding-top: 50px;">
+      <block wx:if="{{fileUrlArr != null && fileUrlArr.length > 0}}">
+        <view wx:for="{{fileUrlArr}}" wx:key="index" wx:for-item="itemUrl">
+          <image src="{{itemUrl}}" style="width: 60%;" mode="aspectFit"></image>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <template is="foot" />
+</view>
