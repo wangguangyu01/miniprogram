@@ -37,17 +37,7 @@ App({
         url: data.path,
       })
     }
-    wx.showModal({
-      title: '提示',
-      content: '这是一个模态弹窗',
-      success (res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-        }
-      }
-    })
+    
     
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力')

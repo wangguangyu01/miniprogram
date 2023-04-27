@@ -160,7 +160,7 @@ Page({
   },
 
   getUserProfile() {
-    console.log(app.globalData.userInfo);
+    console.log("userInfo",JSON.stringify(app.globalData.userInfo));
     if(app.globalData.userInfo != null 
       && JSON.stringify(app.globalData.userInfo) !== "{}") {
         return;

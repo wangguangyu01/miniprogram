@@ -9,11 +9,16 @@ Page({
 
   data: {
     list: [],
-    theme: 'light'
+    theme: 'light',
+    avatarUrl: '',
+    nickName: ''
   },
   onLoad() {
     this.setData({
-      theme: wx.getSystemInfoSync().theme || 'light'
+      theme: wx.getSystemInfoSync().theme || 'light',
+      avatarUrl: app.globalData.userInfo.avatarUrl,
+      nickName: app.globalData.userInfo.nickName
+
     })
 
     if (wx.onThemeChange) {
