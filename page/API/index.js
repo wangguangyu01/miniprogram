@@ -35,29 +35,23 @@ Page({
   },
   onPullDownRefresh: function() {
     console.log("534654765");
-    if (this._freshing) return
-    this._freshing = true
-    this.setData({
-      triggered: true,
-    })
-    setTimeout(() => {
-      this.setData({
-        triggered: false,
-      })
-      this._freshing = false
-    }, 1000);
-    let page = wx.getStorageSync('activityPageIndex');
+    wx.removeStorageSync('activityPages');
     let limit = this.data.limit;
-    page = page - 1;
-    if (page < 0 || page == 0) {
-       return;
-    }
-   
-    let arrStr = wx.getStorageSync('activityArr');
-    let objArr = JSON.parse(arrStr);
-    this.setData({
-       arr:objArr
-    })
+    let page = 1;
+    let loadData = this.loadData(page, limit);
+     loadData.then((value) => {
+      if (value != null) {
+        wx.setStorageSync('activityPageIndex', value.pages);
+        wx.setStorageSync('activityArr', JSON.stringify(value.records));
+        this.setData({
+          currentPage: value.current,
+          limit: value.size,
+          pages: value.pages,
+          list: value.records
+        })
+        wx.stopPullDownRefresh();
+      }
+    });
   },
   onLoad() {
     if (wx.getUserProfile) {
@@ -202,9 +196,10 @@ Page({
     // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
     // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
     wx.getUserProfile({
-      desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+      desc: '用于演示 wx.getUserProfile', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
       success: (res) => {
         app.globalData.userInfo = res.userInfo; 
+        console.log(res.userInfo);
         this.setData({
           userInfo: res.userInfo,
           hasUserInfo: true

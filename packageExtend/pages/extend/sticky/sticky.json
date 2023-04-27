@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "sticky",
+  "navigationBarTitleText": "用户信息",
   "usingComponents": {
     "mp-sticky": "../../../components/sticky/sticky"
   }

@@ -1,35 +1,52 @@
-<view class="page" data-weui-theme="{{theme}}">    <view class="page__hd">
-        <view class="page__title">Article</view>
-        <view class="page__desc">文章</view>
-    </view>
-    <view class="page__bd">
-        <view class="weui-article">
-            <view class="weui-article__h1">大标题</view>
-            <view class="weui-article__section">
-                <view class="weui-article__h2">章标题</view>
-                <view class="weui-article__section">
-                    <view class="weui-article__h3">1.1 节标题</view>
-                    <view class="weui-article__p">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                        consequat.
-                    </view>
-                    <view class="weui-article__p">
-                        <image class="weui-article__img" src="../../images/pic_article.png" mode="aspectFit" style="height: 180px" />
-                        <image class="weui-article__img" src="../../images/pic_article.png" mode="aspectFit" style="height: 180px" />
-                    </view>
-                </view>
-                <view class="weui-article__section">
-                    <view class="weui-article__h3">1.2 节标题</view>
-                    <view class="weui-article__p">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </view>
-                </view>
-            </view>
+<view class="page" data-weui-theme="{{theme}}">
+  <view class="page__bd" style="background-color: #FFFFFF;">
+    <view class="weui-article">
+      <view class="weui-article__section">
+        <view class="weui-article__section">
+          <view class="weui-article__p">
+          编号：{{wxUser.serialNumber}}
+          </view>
+          <view class="weui-article__p">微信昵称：{{wxUser.nickname}}
+          </view>
+          <view class="weui-article__p">
+            <rich-text nodes="性&ensp;&ensp;&ensp;&ensp;别：{{wxUser.sex}}"></rich-text>
+          </view>
+          <view class="weui-article__p">
+            <rich-text nodes="身&ensp;&ensp;&ensp;&ensp;高：{{wxUser.height}}"></rich-text>
+          </view>
+          <view class="weui-article__p">
+            <rich-text nodes="体&ensp;&ensp;&ensp;&ensp;重：{{wxUser.weight}}"></rich-text>
+          </view>
+          <view class="weui-article__p">
+            <rich-text nodes="学&ensp;&ensp;&ensp;&ensp;历：{{wxUser.education}}"></rich-text>
+          </view>
+          <view class="weui-article__p">
+            <rich-text nodes="职&ensp;&ensp;&ensp;&ensp;业：{{wxUser.occupation}}"></rich-text>
+          </view>
+          <view class="weui-article__p">
+            <rich-text nodes="薪&ensp;&ensp;&ensp;&ensp;资：{{wxUser.remuneration}}"></rich-text>
+          </view>
+          <view class="weui-article__p">
+            出生日期：{{wxUser.birthday}}
+          </view>
+          <view class="weui-article__p">
+            所在地：{{wxUser.province}}-{{wxUser.city}}-{{wxUser.region}}
+          </view>
+          <view class="weui-article__h3">个人介绍</view>
+          <view class="weui-article__p">
+            {{wxUser.personProfile}}
+          </view>
+          <view class="weui-article__h3">择偶要求</view>
+          <view class="weui-article__p">
+            {{wxUser.matingRequirement}}
+          </view>
+          <view class="weui-article__p" wx:for="{{wxUser.imagePaths}}" 
+            wx:for-item="itemUrl" wx:key="index" >
+            <image class="weui-article__img" 
+            src="{{itemUrl.url}}" mode="aspectFit" style="height: 180px" lazy-load="true"/>
+          </view>
         </view>
+      </view>
     </view>
+  </view>
 </view>

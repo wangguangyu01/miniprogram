@@ -52,7 +52,6 @@
   font-size: 18px;
 }
 .demo-text-3:before{
-  content: 'C';
   position: absolute;
   top: 50%;
   left: 50%;

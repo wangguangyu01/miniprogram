@@ -1,37 +1,57 @@
 <view class="page" data-weui-theme="{{theme}}">
-    <!-- <view class="index-hd">
-     <image class="index-logo" src="./images/logo_extended.png"></image> 
-     <view class="index-desc">以下是对小程序内置组件能力的补充，包括 WeUI 组件库和一些常见的功能组件，具体属性参数详见 <navigator url="/page/component/pages/doc-web-view/doc-web-view" class="weui-agree__link">小程序开发文档</navigator>。</view> 
-  </view>-->
-    <!-- <view class="page__hd page-weui">
-      <view class="page__title">WeUI</view>
-    </view> -->
-    <view class="page__bd page-weui page__bd_spacing">
-        <view class="kind-list">
-            <block wx:for="{{list}}" wx:key="id">
-                <view class="kind-list__item">
-                    <view id="{{item.id}}" class="weui-flex kind-list__item-hd {{item.open ? 'kind-list__item-hd_show' : ''}}" bindtap="kindToggle">
-                        <view class="weui-flex__item">{{item.name}}</view>
-                        <image class="kind-list__img" src="images/icon_nav_{{item.id}}.png"></image>
-                    </view>
-                    <view class="kind-list__item-bd {{item.open ? 'kind-list__item-bd_show' : ''}}">
-                        <view class="weui-cells {{item.open ? 'weui-cells_show' : ''}}">
-                            <block wx:for="{{item.pages}}" wx:for-item="page" wx:key="*this">
-                                <navigator wx:if="{{page.url}}" url="../../packageExtend/pages/{{page.url}}" class="weui-cell weui-cell_access">
-                                    <view class="weui-cell__bd">{{page.zh}}</view>
-                                    <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-                                </navigator>
-                                <navigator wx:else url="../../packageExtend/pages/{{item.father}}/{{page}}/{{page}}" class="weui-cell weui-cell_access">
-                                    <view class="weui-cell__bd">{{page}}</view>
-                                    <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-                                </navigator>
-                            </block>
-                        </view>
-                    </view>
+  <view style="width: 100%;display: block;margin-bottom: 30px;margin-top: 10px;">
+    <block style="width: 100%;display: block;">
+      <button 
+       style="float:left; width: 30px;font-size: 12px;font-weight: 400;padding: 0px;margin-left: 15px;color:lightcoral;" type="default" bindtap="searchLoadData">全部</button>
+       <button 
+       style="float:left; width: 40px;font-size: 12px;font-weight: 400;padding: 0px;margin-left: 10px;color:lightcoral;" type="default" bindtap="search80WomanLoadData">80后女</button>
+       <button 
+       style="float:left; width: 40px;font-size: 12px;font-weight: 400;padding: 0px;color:lightcoral;margin-left: 10px;"
+       type="default" bindtap="search80ManLoadData">80后男</button>
+       <button 
+       style="float:left; width: 50px;font-size: 12px;font-weight: 400;padding: 0px;color:lightcoral;margin-left: 5px;"
+       type="default" bindtap="search90WomanLoadData">90后女</button>
+       <button 
+       style="float:left; width: 50px;font-size: 12px;font-weight: 400;padding: 0px;color:lightcoral;"
+       type="default" bindtap="search90manLoadData">90后男</button>
+       <button 
+       style="float:left; width: 50px;font-size: 12px;font-weight: 400;padding: 0px; color:lightcoral;"
+       type="default" bindtap="searchBeijingWomanLoadData">京户女</button>
+       <button 
+       style="float:left; width: 50px;font-size: 12px;font-weight: 400;padding: 0px;color:lightcoral;" bindtap="searchBeijingManLoadData"
+       type="default">京户男</button>
+      
+    </block>
+  </view>
+  <view class="page__bd page-weui page__bd_spacing" style="margin-top: 50px;">
+    <view class="kind-list" bindtap="onReachBottom">
+      <block wx:for="{{list}}" wx:key="id">
+        <view class="kind-list__item">
+          <navigator url="../../packageExtend/pages/base/article/article?openid={{item.openId}}" hover-class="other-navigator-hover" style="padding-bottom: 30px;" hover-class="none" bindtap="getUserProfile">
+            <view id="{{item.id}}">
+              <view style="line-height: 35px;">
+                <view wx:for="{{item.imagePaths}}" wx:key="index" wx:for-item="itemUrl">
+                  <image wx:if="{{index == 0}}" src="{{itemUrl.url}}" style="float: left; width: 150px;height: 150px;" mode="aspectFit"></image>
                 </view>
-            </block>
+                <view style="float:left;font-size: 14px;">
+                  <label class="page-body-wrapper" style="align-items:left; flex-direction: inherit;">
+                    编号：{{item.serialNumber}}</label>
+                  <label class="page-body-wrapper" style="align-items:left; flex-direction: inherit;">
+                    微信昵称：{{item.nickname}}</label>
+                  <label class="page-body-wrapper" style="align-items:left; flex-direction: inherit;">
+                    性 别: {{item.sex}}
+                  </label>
+                  <label class="page-body-wrapper" style="align-items:left; flex-direction: inherit;">
+                    出生日期：{{item.birthday}}
+                  </label>
+                </view>
+              </view>
+            </view>
+          </navigator>
         </view>
+      </block>
     </view>
-    <view class="page__ft">
-    </view>
+  </view>
+  <view class="page__ft">
+  </view>
 </view>

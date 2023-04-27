@@ -232,13 +232,19 @@
         "pagePath": "page/extend/index",
         "iconPath": "@iconPathComponent",
         "selectedIconPath": "@selectedIconPathComponent",
-        "text": "嘉宾展示"
+        "text": "会员展示"
       },
       {
         "pagePath": "page/API/index",
         "iconPath": "@iconPathAPI",
         "selectedIconPath": "@selectedIconPathAPI",
         "text": "活动信息"
+      },
+      {
+        "pagePath": "page/cloud/index",
+        "iconPath": "@iconPathCloud",
+        "selectedIconPath": "@selectedIconPathCloud",
+        "text": "个人信息"
       }
     ]
   },

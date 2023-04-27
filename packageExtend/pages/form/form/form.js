@@ -1,4 +1,6 @@
-import CustomPage from '../../../base/CustomPage'
+import CustomPage from '../../../base/CustomPage';
+
+const app = getApp();
 
 CustomPage({
   onShareAppMessage() {
@@ -9,14 +11,16 @@ CustomPage({
   },
   data: {
     showTopTips: false,
+    categories: '',
+    uuid: '',
     radioItems: [{
-        name: 'cell standard',
-        value: '0',
+        name: 'sex',
+        value: '男',
         checked: true
       },
       {
-        name: 'cell standard',
-        value: '1'
+        name: 'sex',
+        value: '女'
       }
     ],
     checkboxItems: [{
@@ -55,8 +59,7 @@ CustomPage({
         value: '法国'
       },
     ],
-
-    date: '2016-09-01',
+    birthday: '2016-09-01',
     time: '12:01',
 
     countryCodes: ['+86', '+80', '+84', '+87'],
@@ -67,23 +70,28 @@ CustomPage({
 
     accounts: ['微信号', 'QQ', 'Email'],
     accountIndex: 0,
-    region: ['北京市', '北京市', '海淀区'],
-    customItem: '全部',
+    region: ['北京', '北京', '海淀区'],
+    customItem: '北京',
     isAgree: false,
     formData: {
 
     },
-    rules: [
-      //   {
-      //   name: 'radio',
-      //   rules: {required: false, message: '单选列表是必选项'},
-      // },
-      //  {
-      //   name: 'checkbox',
-      //   rules: {required: true, message: '多选列表是必选项'},
-      // },
+    rules: [{
+        name: 'sex',
+        rules: {
+          required: false,
+          message: '请选择性别'
+        },
+      },
+       {
+         name: 'nickname',
+         rules: {
+          required: true,
+          message: '请输入微信昵称'
+        },
+       },
       {
-        name: 'name',
+        name: 'wxNumber',
         rules: {
           required: true,
           message: '请输入能添加的微信号'
@@ -94,7 +102,7 @@ CustomPage({
       //   rules: {required: true, message: 'qq必填'},
       // }, 
       {
-        name: 'mobile',
+        name: 'phone',
         rules: [{
           required: true,
           message: '手机号必填'
@@ -102,6 +110,20 @@ CustomPage({
           mobile: true,
           message: '手机号格式不正确'
         }],
+      },
+      {
+        name: 'personProfile',
+        rules: {
+          required: true,
+          message: '请填写个人介绍'
+        },
+      },
+      {
+        name: 'matingRequirement',
+        rules: {
+          required: true,
+          message: '请填写择偶要求'
+        },
       },
       //  {
       //   name: 'vcode',
@@ -120,6 +142,18 @@ CustomPage({
       // },
     ]
   },
+  onLoad: function (options) {
+    let hasOpenId = wx.getStorageSync("hasOpenId");
+    this.setData({
+      'formData.openId': options.openid,
+      categories: options.categories,
+      uuid: options.uuid
+    })
+    if (hasOpenId) {
+      this.loadData();
+    }
+
+  },
   radioChange(e) {
     console.log('radio发生change事件，携带value值为：', e.detail.value)
 
@@ -130,7 +164,20 @@ CustomPage({
 
     this.setData({
       radioItems,
-      'formData.radio': e.detail.value
+      'formData.sex': e.detail.value
+    })
+  },
+  changeSeekingFlag(e) {
+    console.log('radio发生change事件，携带value值为：', e.detail.value)
+
+    const radioItems = this.data.radioItems
+    for (let i = 0, len = radioItems.length; i < len; ++i) {
+      radioItems[i].checked = radioItems[i].value === e.detail.value
+    }
+
+    this.setData({
+      radioItems,
+      'formData.marriageSeekingFlag': e.detail.value
     })
   },
   checkboxChange(e) {
@@ -164,11 +211,13 @@ CustomPage({
       let month = date.getMonth() + 1;
       let day = date.getDate();
       this.setData({
-        date: year + "-" + month + "-" + day
+        birthday: year + "-" + month + "-" + day,
+        'formData.birthday': birthday
       })
     } else {
       this.setData({
-        date: e.detail.value
+        birthday: e.detail.value,
+        'formData.birthday': e.detail.value
       })
     }
   },
@@ -211,7 +260,7 @@ CustomPage({
       isAgree: !!e.detail.value.length
     })
   },
-  submitForm() {
+  async submitForm() {
     this.selectComponent('#form').validate((valid, errors) => {
       console.log('valid', valid, errors)
       if (!valid) {
@@ -228,23 +277,107 @@ CustomPage({
         })
 
       } else {
+        // wx.showToast({
+        //   title: '校验通过'
+        // })
+        // 获取标签内容
+        // let q = wx.createSelectorQuery();
+        // q.select('#input1').fields({
+        //   properties: ['value']
+        // }, res => {
+        //   console.log('query res: ', res);
+        // }).exec();
 
-        
-        console.log(this.data.formData);
-        wx.showToast({
-          title: '校验通过'
+
+        // 赋值表单被选中的性别
+        const radioItems = this.data.radioItems
+        for (let i = 0, len = radioItems.length; i < len; ++i) {
+          if (radioItems[i].checked) {
+            this.setData({
+              'formData.sex': radioItems[i].value
+            })
+          }
+        }
+
+        // 如果没有选择的话，将默认的所在地区以及出生日期赋值到表单数据中
+        this.setData({
+          'formData.region': this.data.region,
+          'formData.birthday': this.data.birthday
         })
+        this.submitFormData();
       }
     })
-    // this.selectComponent('#form').validateField('mobile', (valid, errors) => {
-    //     console.log('valid', valid, errors)
-    // })
   },
   bindRegionChange: function (e) {
     console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
-      region: e.detail.value
+      region: e.detail.value,
+      'formData.region': e.detail.value
+    })
+  },
+  async submitFormData() {
+
+    this.setData({
+      'formData.birthday': this.data.birthday,
+      'formData.region': this.data.formData.region[2],
+      'formData.province': this.data.formData.region[0],
+      'formData.city': this.data.formData.region[1],
+      'formData.nickname': this.data.formData.nickname,
+      'formData.height': this.data.formData.height,
+      'formData.height': this.data.formData.height
+    })
+    console.log("json-->" + JSON.stringify(this.data.formData));
+    const res = await wx.cloud.callContainer({
+      "config": {
+        "env": "prod-0gws2yp30d12fdb1"
+      },
+      "path": "/api/addWxUser",
+      "header": {
+        "X-WX-SERVICE": "springboot-u4yq",
+        'content-type': 'application/json'
+      },
+      "method": "POST",
+      "data": JSON.stringify(this.data.formData)
+    });
+    if (res.data.code === 0 || res.data.code === '0') {
+      wx.redirectTo({
+        url: '../uploader/uploader?openid=' + res.data.data.openid + "&categories=" + this.data.categories + "&uuid=" + this.data.uuid
+      })
+    }
+  },
+  async loadData() {
+    const res = await wx.cloud.callContainer({
+      "config": {
+        "env": "prod-0gws2yp30d12fdb1"
+      },
+      "path": "/api/queryWxUserInfo",
+      "header": {
+        "X-WX-SERVICE": "springboot-u4yq",
+        'content-type': 'application/json'
+      },
+      "method": "POST",
+      "data": {
+        "openid": this.data.formData.openId
+      }
+    });
+    console.log(res.data.data);
+    this.setData({
+       'formData.openId': res.data.data.openId,
+       'formData.wxNumber':res.data.data.wxNumber,
+       'formData.nickname':res.data.data.nickname,
+       'formData.phone':res.data.data.phone,
+       'formData.education':res.data.data.education,
+       'formData.occupation':res.data.data.occupation,
+       'formData.remuneration':res.data.data.remuneration,
+       'formData.sex': res.data.data.sex,
+       birthday: res.data.data.birthday,
+       region: [res.data.data.province,
+        res.data.data.city, res.data.data.region],
+        'formData.personProfile':res.data.data.personProfile,
+        'formData.matingRequirement':res.data.data.matingRequirement,
+        'formData.marriageSeekingFlag':res.data.data.marriageSeekingFlag,
+        'formData.height':res.data.data.height,
+       'formData.weight':res.data.data.weight
     })
   }
-
 })

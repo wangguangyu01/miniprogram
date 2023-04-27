@@ -1,42 +1,74 @@
 <view class="page" data-weui-theme="{{theme}}">
   <mp-form-page > 
     <mp-form  id="form" rules="{{rules}}" models="{{formData}}">
-      <mp-cell show-error prop="name" title="微信号" ext-class="">
-        <input bindinput="formInputChange" data-field="name" name="name" class="weui-input" placeholder="请输入能添加的微信号" />
+      <mp-cell show-error prop="wxNumber" title="微信号" ext-class="">
+        <input bindinput="formInputChange" data-field="wxNumber" name="wxNumber" class="weui-input" placeholder="请输入能添加的微信号" 
+        value="{{formData.wxNumber}}"/>
+      </mp-cell>
+      <mp-cell show-error prop="nickname" title="微信昵称" ext-class="">
+        <input bindinput="formInputChange" data-field="nickname" name="nickname" class="weui-input" placeholder="微信昵称" 
+        value="{{formData.nickname}}"/>
       </mp-cell>
       <!-- <mp-cell prop="qq" title="qq" ext-class="">
           <input bindinput="formInputChange" data-field="qq" class="weui-input" placeholder="请输入qq" />
         </mp-cell> -->
-      <mp-cell show-error prop="mobile" title="手机号" ext-class=" weui-cell_vcode">
-        <input bindinput="formInputChange" data-field="mobile" class="weui-input" placeholder="请输入手机号" />
+      <mp-cell show-error prop="phone" title="手机号" ext-class=" ">
+        <input bindinput="formInputChange" data-field="phone" class="weui-input" placeholder="请输入手机号" value="{{formData.phone}}"/>
       </mp-cell>
-      <mp-cell prop="date" title="出生日期" ext-class="">
-        <picker picker mode="date" value="{{date}}" start="1900-01-01" end="3000-01-01" bindchange="bindDateChange">
-          <view class="weui-input">{{date}}</view>
+
+      <mp-cell prop="sex"  title="性别">
+        <radio-group data-field="sex" class="weui-input" bindchange="radioChange">
+          <label>
+            <radio name="sex"  value="男" 
+            checked="{{formData.sex == '男'|| formData.sex == null || formData.sex == ''}}" />男
+          </label>
+          <label>
+            <radio name="sex"  value="女" checked="{{formData.sex == '女'}}"/>女
+          </label>
+        </radio-group>
+      </mp-cell>
+
+      <mp-cell show-error prop="height" title="身高" ext-class=" ">
+        <input bindinput="formInputChange" data-field="height" class="weui-input" placeholder="请输入身高" value="{{formData.height}}"/>
+      </mp-cell>
+
+
+
+      <mp-cell show-error prop="weight" title="体重" ext-class=" ">
+        <input bindinput="formInputChange" data-field="weight" class="weui-input" placeholder="请输入体重" value="{{formData.weight}}"/>
+      </mp-cell>
+
+      <mp-cell prop="birthday" show-error title="出生日期" ext-class="">
+        <picker picker mode="date" value="{{birthday}}" start="1900-01-01" end="3000-01-01" bindchange="bindDateChange">
+          <view class="weui-input">{{birthday}}</view>
         </picker>
       </mp-cell>
+
+      <mp-cell show-error prop="education" title="学历" ext-class="">
+        <input bindinput="formInputChange" data-field="education" class="weui-input" placeholder="请输入学历" value="{{formData.education}}"/>
+      </mp-cell>
+
+      <mp-cell show-error prop="occupation" title="职业" ext-class=" ">
+        <input bindinput="formInputChange" data-field="occupation" class="weui-input" placeholder="请输入职业" value="{{formData.occupation}}"/>
+      </mp-cell>
+
+      <mp-cell show-error prop="remuneration" title="月薪" ext-class="">
+        <input bindinput="formInputChange" data-field="remuneration" class="weui-input" placeholder="请输入月薪" value="{{formData.remuneration}}"/>
+      </mp-cell>
+
 
       <!-- <mp-cell prop="vcode" title="验证码" ext-class=" weui-cell_vcode">
           <input bindinput="formInputChange" data-field="vcode" class="weui-input" placeholder="请输入验证码" />
           <image slot="footer" class="weui-vcode-img" src="../../images/vcode.jpg" style="width: 108px"></image>
         </mp-cell> -->
-      <mp-cell prop="sex"  title="性别">
-        <radio-group data-field="sex" class="weui-input">
-          <label>
-            <radio value="男" checked="true"/>男
-          </label>
-          <label>
-            <radio value="女" />女
-          </label>
-        </radio-group>
-      </mp-cell>
+     
       <!-- <mp-cell ext-class="weui-cell_select weui-cell_select-after">
         <view slot="title" class="weui-label">国家/地区</view>
         <picker bindchange="bindCountryChange" value="{{countryIndex}}" range="{{countries}}">
           <view class="weui-select">{{countries[countryIndex]}}</view>
         </picker>
       </mp-cell> -->
-      <mp-cell prop="region" title="所在地区">
+      <mp-cell prop="region" show-error title="所在地区">
         <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
           <view class="picker">
             {{region[0]}}，{{region[1]}}，{{region[2]}}
@@ -60,15 +92,19 @@
         </mp-cell>
       </mp-cells> -->
       <mp-cells title="个人介绍">
-        <mp-cell has-header="{{false}}" has-footer="{{false}}" title="" ext-class="">
-          <textarea name="personProfile" id="personProfile"  class="weui-textarea weui-input" placeholder="请输入个人介绍" style="height: 3.3em"/>
-          <view class="weui-textarea-counter">0/200</view>
+        <mp-cell has-header="{{false}}" has-footer="{{false}}" title="" ext-class="" show-error prop="personProfile" >
+          <textarea name="personProfile" id="personProfile"  class="weui-textarea weui-input" placeholder="请输入个人介绍" style="height: 3.3em" bindinput="formInputChange"
+          data-field="personProfile"
+          value="{{formData.personProfile}}"/>
+          <view class="weui-textarea-counter">0/1000</view>
         </mp-cell>
       </mp-cells>
       <mp-cells title="择偶要求">
-        <mp-cell has-header="{{false}}" has-footer="{{false}}" title=""  ext-class="">
-          <textarea name="matingRequirement" id="matingRequirement"  class="weui-textarea weui-input" placeholder="请输择偶要求" style="height: 3.3em" />
-          <view class="weui-textarea-counter">0/200</view>
+        <mp-cell has-header="{{false}}" has-footer="{{false}}" title=""  ext-class="" show-error prop="matingRequirement">
+          <textarea name="matingRequirement" id="matingRequirement"  class="weui-textarea weui-input" placeholder="请输择偶要求" style="height: 3.3em" bindinput="formInputChange"
+          data-field="matingRequirement" 
+          value="{{formData.matingRequirement}}"/>
+          <view class="weui-textarea-counter">0/1000</view>
         </mp-cell>
       </mp-cells>
       <!-- <mp-cells title="选择">
@@ -98,6 +134,17 @@
         </view>
       </label>
     </checkbox-group> -->
+    <mp-cell prop="marriageSeekingFlag"  title="是否相亲" style="text-align: justify;">
+        <radio-group data-field="marriageSeekingFlag" class="weui-input" bindchange="changeSeekingFlag">
+          <label style="margin-left: 40px;">
+            <radio name="marriageSeekingFlag"  value="0" 
+            checked="{{formData.marriageSeekingFlag == '0' || formData.marriageSeekingFlag == '' || formData.marriageSeekingFlag == null}}" />是
+          </label>
+          <label>
+            <radio name="marriageSeekingFlag"  value="1" checked="{{formData.marriageSeekingFlag == '1'}}"/>否
+          </label>
+        </radio-group>
+      </mp-cell>
     <view slot="button">
       <button class="weui-btn" type="primary" bindtap="submitForm">确定</button>
     </view>

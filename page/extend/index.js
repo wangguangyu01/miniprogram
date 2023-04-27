@@ -1,125 +1,27 @@
 import CustomPage from './base/CustomPage'
-
 CustomPage({
   onShareAppMessage() {
     return {
-      title: '扩展能力',
+      title: '嘉宾展示',
       path: 'page/extend/index'
     }
   },
   data: {
-    list: [
-      {
-        id: 'form',
-        name: '表单',
-        open: false,
-        father: 'form', // 父文件夹
-        pages: ['cell', 'slideview', 'form', 'uploader']
-      },
-      {
-        id: 'widget',
-        name: '基础组件',
-        open: false,
-        father: 'base', // 父文件夹
-        pages: [
-          'article',
-          'icons',
-          'badge',
-          'flex',
-          'footer',
-          'gallery',
-          'grid',
-          'loadmore',
-          'loading',
-          'panel',
-          'preview'
-        ]
-      },
-      {
-        id: 'feedback',
-        name: '操作反馈',
-        open: false,
-        father: 'operate', // 父文件夹
-        pages: ['dialog', 'msg', 'half-screen-dialog', 'actionsheet', 'toptips']
-      },
-      {
-        id: 'nav',
-        name: '导航相关',
-        open: false,
-        father: 'navigation', // 父文件夹
-        pages: ['navigation', 'tabbar']
-      },
-      {
-        id: 'search',
-        name: '搜索相关',
-        open: false,
-        father: 'search', // 父文件夹
-        pages: ['searchbar']
-      },
-      {
-        id: 'extended',
-        name: '扩展组件',
-        open: false,
-        father: 'extend', // 父文件夹
-        pages: ['emoji', 'video-swiper', 'index-list', 'recycle-view', 'sticky', 'tabs', 'vtabs', 'barrage', 'select-text', 'wxml-to-canvas']
-      },
-      {
-        id: 'adaptive',
-        name: '多端适配（需在PC端体验）',
-        open: false,
-        pages: [
-          {zh: '左右伸缩', url: 'adapt/telescopic/telescopic'},
-          {zh: '换行排列', url: 'adapt/linebreak/linebreak'},
-          {zh: '侧边导航栏', url: 'adapt/sidenavigation/sidenavigation'},
-          {zh: '分页展现', url: 'adapt/pagination/pagination'},
-          {zh: '自由布局', url: 'adapt/freelayout/freelayout'},
-          {zh: '分层展现', url: 'adapt/layeredpresentation/layeredpresentation'},
-          {zh: '横向拓展', url: 'adapt/horizontalexpansion/horizontalexpansion'}
-        ]
-      }
-    ],
-    extendedList: [
-      {
-        id: 'extended',
-        name: '扩展组件',
-        open: false,
-        pages: ['emoji', 'video-swiper', 'index-list', 'recycle-view', 'sticky', 'tabs', 'vtabs', 'barrage', 'select-text', 'wxml-to-canvas']
-      }
-    ]
+    title: "嘉宾展示",
+    list: [],
+    triggered: false,
+    theme: 'light',
+    currentPage: 1,
+    limit: 10,
+    pages: 1,
+    total: 0,
+    userInfo: {},
+    hasUserInfo: false,
+    canIUseGetUserProfile: false,
+    birthdaySexSearch: "",
+    regionSexSearch: ""
   },
-  kindToggle(e) {
-    const id = e.currentTarget.id
-    const list = this.data.list
-    for (let i = 0, len = list.length; i < len; ++i) {
-      if (list[i].id === id) {
-        list[i].open = !list[i].open
-      } else {
-        list[i].open = false
-      }
-    }
-    // const extendedList = this.data.extendedList.map((item) => ({...item, open: false}))
-    this.setData({
-      list,
-      // extendedList,
-
-    })
-  },
-  kindExtenedListToggle(e) {
-    const id = e.currentTarget.id
-    const extendedList = this.data.extendedList
-    for (let i = 0, len = extendedList.length; i < len; ++i) {
-      if (extendedList[i].id === id) {
-        extendedList[i].open = !extendedList[i].open
-      } else {
-        extendedList[i].open = false
-      }
-    }
-    const list = this.data.list.map((item) => ({...item, open: false}))
-    this.setData({
-      extendedList,
-      list,
-    })
-  },
+  
   themeToggle() {
     const App = getApp()
 
@@ -130,5 +32,268 @@ CustomPage({
         App.themeChanged('light')
       }
     }
-  }
+  },
+  onLoad() {
+     console.log("fdsgd",123444);
+     let limit = this.data.limit;
+     let page = 1;
+     let birthdaySexSearch = this.data.birthdaySexSearch;
+     let regionSexSearch = this.data.regionSexSearch;
+     let loadData = this.loadData(birthdaySexSearch, regionSexSearch,page, limit);
+     loadData.then((value) => {
+      if (value != null) {
+        wx.setStorageSync('wxUserPages', value.pages);
+        wx.setStorageSync('wxUserArr', JSON.stringify(value.records));
+        this.setData({
+          currentPage: value.current,
+          limit: value.size,
+          pages: value.pages,
+          list: value.records
+        })
+      }
+    });
+  },
+  async loadData(birthdaySexSearch, regionSexSearch, currentPage, limit) {
+    const res = await wx.cloud.callContainer({
+      "config": {
+        "env": "prod-0gws2yp30d12fdb1"
+      },
+      "path": "/api/queryWxUserPage",
+      "header": {
+        "X-WX-SERVICE": "springboot-u4yq",
+        'content-type': 'application/json'
+      },
+      "method": "POST",
+      "data": {
+        "categories": "1",
+        "limit": limit,
+        "currentPage": currentPage,
+        "birthdaySexSearch": birthdaySexSearch,
+        "regionSexSearch": regionSexSearch
+      }
+    });
+    return res.data.data;
+  },
+  // 下拉刷新
+  onPullDownRefresh: function() {
+    console.log("534654765");
+    wx.removeStorageSync('wxUserPages');
+    let limit = this.data.limit;
+     let page = 1;
+     let birthdaySexSearch = this.data.birthdaySexSearch;
+     let regionSexSearch = this.data.regionSexSearch;
+     let loadData = this.loadData(birthdaySexSearch, regionSexSearch,page, limit);
+     loadData.then((value) => {
+      if (value != null) {
+        wx.setStorageSync('wxUserPages', value.pages);
+        wx.setStorageSync('wxUserArr', JSON.stringify(value.records));
+        this.setData({
+          currentPage: value.current,
+          limit: value.size,
+          pages: value.pages,
+          list: value.records
+        })
+        wx.stopPullDownRefresh();
+      }
+    });
+  
+   
+  },
+
+  onRefresh() {
+    if (this._freshing) return
+    this._freshing = true
+    this.setData({
+      triggered: true,
+    })
+    setTimeout(() => {
+      this.setData({
+        triggered: false,
+      })
+      this._freshing = false
+    }, 1000)
+  },
+  // 上拉触底分页查询
+  onReachBottom: function() {
+    let pages = wx.getStorageSync('wxUserPages')
+    let currentPage = this.data.currentPage + 1;
+    let birthdaySexSearch = this.data.birthdaySexSearch;
+    let regionSexSearch = this.data.regionSexSearch;
+    if ( pages < currentPage) {
+       return;
+    }
+    let limit = this.data.limit;
+    let loadData = this.loadData(birthdaySexSearch,regionSexSearch, currentPage, limit);
+    loadData.then((value) => {
+      console.log(value);
+      let obj = null;
+      wx.setStorageSync('wxUserPageIndex', value.current);
+      if (wx.getStorageSync('wxUserArr') !== null && wx.getStorageSync('wxUserArr') !== '') {
+        obj = JSON.parse(wx.getStorageSync('wxUserArr'));
+      }
+      let arr = obj.concat(value.records);
+      wx.setStorageSync('wxUserArr', JSON.stringify(arr));
+      if (value != null) {
+        this.setData({
+          currentPage: value.current,
+          limit: value.size,
+          pages: value.pages,
+          arr: arr
+        });
+      }
+    });
+  },
+  // 80后女
+  search80WomanLoadData(e) {
+    console.log(3324343);
+     this.setData({
+        birthdaySexSearch: "1"
+     })
+     let birthdaySexSearch = this.data.birthdaySexSearch;
+     let regionSexSearch = this.data.regionSexSearch;
+     let loadData = this.loadData(birthdaySexSearch,regionSexSearch, 1, 10);
+     loadData.then((value) => {
+      if (value != null) {
+        wx.setStorageSync('wxUserPages', value.pages);
+        wx.setStorageSync('wxUserArr', JSON.stringify(value.records));
+        this.setData({
+          currentPage: value.current,
+          limit: value.size,
+          pages: value.pages,
+          list: value.records
+        })
+      }
+    });
+  },
+  // 80后男
+  search80ManLoadData(e) {
+    this.setData({
+       birthdaySexSearch: "2"
+    })
+    let birthdaySexSearch = this.data.birthdaySexSearch;
+    let regionSexSearch = this.data.regionSexSearch;
+    let loadData = this.loadData(birthdaySexSearch,regionSexSearch, 1, 10);
+    loadData.then((value) => {
+     if (value != null) {
+       wx.setStorageSync('wxUserPages', value.pages);
+       wx.setStorageSync('wxUserArr', JSON.stringify(value.records));
+       this.setData({
+         currentPage: value.current,
+         limit: value.size,
+         pages: value.pages,
+         list: value.records
+       })
+     }
+   })
+ },
+   // 90后女
+   search90WomanLoadData(e) {
+    this.setData({
+       birthdaySexSearch: "3"
+    })
+    let birthdaySexSearch = this.data.birthdaySexSearch;
+    let regionSexSearch = this.data.regionSexSearch;
+    let loadData =  this.loadData(birthdaySexSearch,regionSexSearch, 1, 10);
+    loadData.then((value) => {
+     if (value != null) {
+       wx.setStorageSync('wxUserPages', value.pages);
+       wx.setStorageSync('wxUserArr', JSON.stringify(value.records));
+       this.setData({
+         currentPage: value.current,
+         limit: value.size,
+         pages: value.pages,
+         list: value.records
+       })
+     }
+   })
+ },
+
+ // 90后男
+ search90manLoadData(e) {
+  this.setData({
+     birthdaySexSearch: "4"
+  })
+  let birthdaySexSearch = this.data.birthdaySexSearch;
+  let regionSexSearch = this.data.regionSexSearch;
+  let loadData =  this.loadData(birthdaySexSearch,regionSexSearch, 1, 10);
+  loadData.then((value) => {
+   if (value != null) {
+     wx.setStorageSync('wxUserPages', value.pages);
+     wx.setStorageSync('wxUserArr', JSON.stringify(value.records));
+     this.setData({
+       currentPage: value.current,
+       limit: value.size,
+       pages: value.pages,
+       list: value.records
+     })
+   }
+ })
+},
+// 京户女
+searchBeijingWomanLoadData(e) {
+  this.setData({
+    birthdaySexSearch: "",
+    regionSexSearch: "1"
+  })
+  let birthdaySexSearch = this.data.birthdaySexSearch;
+  let regionSexSearch = this.data.regionSexSearch;
+  let loadData =  this.loadData(birthdaySexSearch,regionSexSearch, 1, 10);
+  loadData.then((value) => {
+   if (value != null) {
+     wx.setStorageSync('wxUserPages', value.pages);
+     wx.setStorageSync('wxUserArr', JSON.stringify(value.records));
+     this.setData({
+       currentPage: value.current,
+       limit: value.size,
+       pages: value.pages,
+       list: value.records
+     })
+   }
+ })
+},
+// 京户男
+searchBeijingManLoadData(e) {
+  this.setData({
+    birthdaySexSearch: "",
+    regionSexSearch: "2"
+  })
+  let birthdaySexSearch = this.data.birthdaySexSearch;
+  let regionSexSearch = this.data.regionSexSearch;
+  let loadData = this.loadData(birthdaySexSearch,regionSexSearch, 1, 10);
+  loadData.then((value) => {
+   if (value != null) {
+     wx.setStorageSync('wxUserPages', value.pages);
+     wx.setStorageSync('wxUserArr', JSON.stringify(value.records));
+     this.setData({
+       currentPage: value.current,
+       limit: value.size,
+       pages: value.pages,
+       list: value.records
+     })
+   }
+ })
+},
+// 京户男
+searchLoadData(e) {
+  this.setData({
+    birthdaySexSearch: "",
+    regionSexSearch: ""
+  })
+  let birthdaySexSearch = this.data.birthdaySexSearch;
+  let regionSexSearch = this.data.regionSexSearch;
+  let loadData = this.loadData(birthdaySexSearch,regionSexSearch, 1, 10);
+  loadData.then((value) => {
+   if (value != null) {
+     wx.setStorageSync('wxUserPages', value.pages);
+     wx.setStorageSync('wxUserArr', JSON.stringify(value.records));
+     this.setData({
+       currentPage: value.current,
+       limit: value.size,
+       pages: value.pages,
+       list: value.records
+     })
+   }
+ })
+},
+
 })

@@ -1,5 +1,6 @@
 {
   "usingComponents": {},
-  "navigationBarTitleText": "嘉宾展示"
+  "navigationBarTitleText": "会员列表",
+  "enablePullDownRefresh": true
 
 }

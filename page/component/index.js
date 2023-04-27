@@ -17,30 +17,24 @@ Page({
  
   onPullDownRefresh: function() {
     console.log("534654765");
-    if (this._freshing) return
-    this._freshing = true
-    this.setData({
-      triggered: true,
-    })
-    setTimeout(() => {
-      this.setData({
-        triggered: false,
-      })
-      this._freshing = false
-    }, 1000);
-    let page = wx.getStorageSync('wonderfulPageIndex');
+    wx.removeStorageSync('wonderfulPages');
     let limit = this.data.limit;
-    page = page - 1;
-    if (page < 0 || page == 0) {
-       return;
-    }
-   
-    let arrStr = wx.getStorageSync('wonderfulArr');
-    let objArr = JSON.parse(arrStr);
-    this.setData({
-       arr:objArr
+    let page = 1;
+    let loadData = this.loadData(page, limit);
+     loadData.then((value) => {
+      if (value != null) {
+        wx.setStorageSync('wonderfulPages', value.pages);
+        wx.setStorageSync('wonderfulArr', JSON.stringify(value.records));
+        this.setData({
+          currentPage: value.current,
+          limit: value.size,
+          pages: value.pages,
+          list: value.records
+        })
+        wx.stopPullDownRefresh();
+      }
     });
-    wx.stopPullDownRefresh();
+
   },
 
   onRefresh() {
@@ -126,11 +120,6 @@ Page({
   },
 
   onLoad() {
-    if (wx.getUserProfile) {
-      this.setData({
-        canIUseGetUserProfile: true
-      })
-    }
   
     wx.removeStorageSync('wonderfulPages');
     let limit = this.data.limit;

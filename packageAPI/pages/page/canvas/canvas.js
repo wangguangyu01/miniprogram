@@ -1,5 +1,5 @@
 const example = require('./example.js')
-
+const app = getApp();
 // Page({
 //   onShareAppMessage() {
 //     return {
@@ -116,6 +116,7 @@ Page({
   },
 
   async gotoRegister() {
+    let uuid = this.data.uuid;
     wx.login({
       async success(data) {
         console.log(data);
@@ -133,14 +134,16 @@ Page({
               "code": data.code,
             }
           });
-          if(!res.data.data) {
+          console.log(res.data.data);
+          app.globalData.openid = res.data.data.openid;
+         
+          if(!res.data.data.flag) {
             wx.redirectTo({
-              url: '../../../../packageExtend/pages/form/form/form'
+              url: '../../../../packageExtend/pages/form/form/form?openid='+ res.data.data.openid+"&categories=2&uuid="+uuid
             })
           }
         }
     })
-   
   }
   
 })
