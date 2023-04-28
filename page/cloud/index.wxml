@@ -1,10 +1,10 @@
 <view class="page" data-weui-theme="{{theme}}" style="width: 100%;">
-  <view wx:if="{{openid == ''}}" style="height: 50%; position: absolute;top: 50%; width: 50%; left: 25%;">
+  <view wx:if="{{hasUser =='' || !hasUser}}" style="height: 50%; position: absolute;top: 50%; width: 50%; left: 25%;">
     <button type="primary" bindtap="updateInfo">注册</button>
   </view>
 
   <view class="index" 
-  wx:if="{{openid != ''}}" >
+  wx:if="{{hasUser !='' && hasUser}}" >
     <view  class="index-hd"  style="width: 100px; height: 100px;margin: 0 auto;"> 
       <view>
          <image mode="aspectFit" 
@@ -16,7 +16,7 @@
       </view>
     </view>
   </view>
-  <scroll-view wx:if="{{openid != ''}}" scroll-y="true" scroll-x="false" style="height: 150px;margin-top: 30px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+  <scroll-view wx:if="{{hasUser !='' && hasUser}}" scroll-y="true" scroll-x="false" style="height: 150px;margin-top: 30px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
     <view class="scroll-view-item">
       <text style="line-height: 30px;float: left;margin-top: 10px;margin-right: 100px;margin-left: 50px;">个人信息</text>
       <button size="mini" style="float: left;text-align: right;line-height: 30px;font-style: normal;font-weight: normal; font-size: 14px;" bindtap="showInfo">查看</button>

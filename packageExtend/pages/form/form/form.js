@@ -341,8 +341,9 @@ CustomPage({
       "data": JSON.stringify(this.data.formData)
     });
     if (res.data.code === 0 || res.data.code === '0') {
+      wx.setStorageSync('hasUser', true);
       wx.redirectTo({
-        url: '../uploader/uploader?openid=' + res.data.data.openid + "&categories=" + this.data.categories + "&uuid=" + this.data.uuid
+        url: '../uploader/uploader?openid=' + res.data.data.openid + "&categories=" + this.data.categories + "&uuid=" + this.data.uuid+"&hasUser=true"
       })
     }
   },
@@ -362,25 +363,28 @@ CustomPage({
       }
     });
     console.log(res.data.data);
-    this.setData({
-       'formData.openId': res.data.data.openId,
-       'formData.wxNumber':res.data.data.wxNumber,
-       'formData.nickname':res.data.data.nickname,
-       'formData.phone':res.data.data.phone,
-       'formData.education':res.data.data.education,
-       'formData.occupation':res.data.data.occupation,
-       'formData.remuneration':res.data.data.remuneration,
-       'formData.sex': res.data.data.sex,
-       birthday: res.data.data.birthday,
-       region: [res.data.data.province,
-        res.data.data.city, res.data.data.region],
-        'formData.personProfile':res.data.data.personProfile,
-        'formData.matingRequirement':res.data.data.matingRequirement,
-        'formData.marriageSeekingFlag':res.data.data.marriageSeekingFlag,
-        'formData.height':res.data.data.height,
-       'formData.weight':res.data.data.weight,
-       avatarUrl: res.data.data.headimgurl
-    })
+    if (res.data.data != null) {
+      this.setData({
+        'formData.openId': res.data.data.openId,
+        'formData.wxNumber':res.data.data.wxNumber,
+        'formData.nickname':res.data.data.nickname,
+        'formData.phone':res.data.data.phone,
+        'formData.education':res.data.data.education,
+        'formData.occupation':res.data.data.occupation,
+        'formData.remuneration':res.data.data.remuneration,
+        'formData.sex': res.data.data.sex,
+        birthday: res.data.data.birthday,
+        region: [res.data.data.province,
+         res.data.data.city, res.data.data.region],
+         'formData.personProfile':res.data.data.personProfile,
+         'formData.matingRequirement':res.data.data.matingRequirement,
+         'formData.marriageSeekingFlag':res.data.data.marriageSeekingFlag,
+         'formData.height':res.data.data.height,
+        'formData.weight':res.data.data.weight,
+        avatarUrl: res.data.data.headimgurl
+     })
+    }
+   
   },
   onChooseAvatar(e) {
     const { avatarUrl } = e.detail 

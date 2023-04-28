@@ -12,15 +12,19 @@ CustomPage({
     uuid: '',
     categories: '',
     filePaths: [],
-    openid: ""
+    openid: "",
+    hasUser: false
   },
   onLoad(options) {
     this.setData({
       selectFile: this.selectFile.bind(this),
       uplaodFile: this.uplaodFile.bind(this),
       uuid: options.uuid,
-      categories: options.categories
+      categories: options.categories,
+      hasUser: options.hasUser
     })
+    console.log("hasUser",
+     wx.getStorageSync("hasUser"));
     let hasOpenId = wx.getStorageSync("hasOpenId");
     if (hasOpenId) {
       this.loadData();
@@ -164,8 +168,8 @@ CustomPage({
   },
   gotoResource() {
     console.log("fdgfd");
-    wx.redirectTo({
-      url: '../../base/article/article?openid='+app.globalData.openid
+    wx.reLaunch({
+      url: '../../../../page/cloud/index'
     }) 
   },
   async loadData() {

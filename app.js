@@ -4,7 +4,7 @@ global.isDemo = true
 global.isShare = false
 App({
   onLaunch(opts, data) {
-    
+    wx.cloud.init();
     // const that = this;
     // const canIUseSetBackgroundFetchToken = wx.canIUse('setBackgroundFetchToken')
     // if (canIUseSetBackgroundFetchToken) {
@@ -37,8 +37,9 @@ App({
         url: data.path,
       })
     }
-    
-    
+    this.loadOpenid();
+    this.globalData.openid = wx.getStorageSync("openid");
+    this.loadDataUserInfo();
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力')
     } else {
@@ -79,7 +80,8 @@ App({
     hasLogin: false,
     openid: null,
     iconTabbar: '/page/weui/example/images/icon_tabbar.png',
-    userInfo: {}
+    userInfo: {},
+    hasUser: false
   },
   // lazy loading openid
   getUserOpenId(callback) {
@@ -122,5 +124,57 @@ App({
       this.globalData.openid = res.result.openid
       return res.result.openid
     })
-  }
+  },
+  loadOpenid() {
+    wx.login({
+      async success(data) {
+        console.log(data);
+          const res = await wx.cloud.callContainer({
+            "config": {
+              "env": "prod-0gws2yp30d12fdb1"
+            },
+            "path": "/api/checkWxUser",
+            "header": {
+              "X-WX-SERVICE": "springboot-u4yq",
+              'content-type': 'application/json'
+            },
+            "method": "POST",
+            "data": {
+              "code": data.code,
+            }
+          });
+          console.log(res.data.data);
+          wx.setStorageSync('openid', res.data.data.openid);
+           wx.setStorageSync('hasOpenId', res.data.data.flag)
+        }
+    })
+  },
+  async loadDataUserInfo() {
+   
+    let openid = wx.getStorageSync("openid");
+    const res = await wx.cloud.callContainer({
+      "config": {
+        "env": "prod-0gws2yp30d12fdb1"
+      },
+      "path": "/api/queryWxUserInfo",
+      "header": {
+        "X-WX-SERVICE": "springboot-u4yq",
+        'content-type': 'application/json'
+      },
+      "method": "POST",
+      "data": {
+        "openid": openid
+      }
+    });
+    if (res.data.data.phone != null ) {
+      wx.setStorageSync('hasUser', true);
+    } else {
+      wx.setStorageSync('hasUser', false);
+      wx.switchTab({
+        url: '/page/cloud/index'
+      })
+    }
+    return res.data.data;
+  },
+
 })

@@ -12,7 +12,8 @@ Page({
     theme: 'light',
     avatarUrl: '',
     nickName: '',
-    openid: ''
+    openid: '',
+    hasUser: false
   },
   onLoad() {
     this.setData({
@@ -119,11 +120,14 @@ Page({
         "openid": openid
       }
     });
-    
-    this.setData({
-      nickName: res.data.data.nickname,
-      avatarUrl: res.data.data.headimgurl
-    })
+    if (res.data.data.phone != null) {
+      wx.setStorageSync('hasUser', true);
+      this.setData({
+        nickName: res.data.data.nickname,
+        avatarUrl: res.data.data.headimgurl,
+        hasUser: true
+      })
+    }
     return res.data.data;
   },
 

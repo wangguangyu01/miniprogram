@@ -9,7 +9,8 @@ CustomPage({
   },
   data: {
     openid: "",
-    wxUser:{}
+    wxUser:{},
+    hasUser: false
   },
   onLoad(options) {
     console.log("options.openid", options.openid);
@@ -35,12 +36,15 @@ CustomPage({
       }
     });
     console.log(res.data.data);
-    wx.setNavigationBarTitle({
-      title: res.data.data.nickname
-    })
-    this.setData({
-      wxUser: res.data.data
-    })
+    if (res.data.data != null) {
+      wx.setNavigationBarTitle({
+        title: res.data.data.nickname
+      })
+      this.setData({
+        wxUser: res.data.data,
+        hasUser: true
+      })
+    }
     return res.data.data;
   }
 })
