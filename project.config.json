@@ -26,5 +26,6 @@
     "ignore": [],
     "include": []
   },
-  "appid": "wx638e212bbba9e7f7"
+  "appid": "wx638e212bbba9e7f7",
+  "projectname": "miniprogram"
 }

@@ -11,16 +11,15 @@ Page({
     list: [],
     theme: 'light',
     avatarUrl: '',
-    nickName: ''
+    nickName: '',
+    openid: ''
   },
   onLoad() {
     this.setData({
       theme: wx.getSystemInfoSync().theme || 'light',
-      avatarUrl: app.globalData.userInfo.avatarUrl,
-      nickName: app.globalData.userInfo.nickName
-
+      openid: wx.getStorageSync("openid")
     })
-
+    this.loadData();
     if (wx.onThemeChange) {
       wx.onThemeChange(({
         theme
@@ -97,5 +96,35 @@ Page({
     wx.redirectTo({
       url: '../../packageExtend/pages/form/form/form?openid='+ openid
     })
-  }
+  },
+  onChooseAvatar(e) {
+    const { avatarUrl } = e.detail 
+    this.setData({
+      avatarUrl,
+    })
+  },
+  async loadData() {
+    let openid = wx.getStorageSync("openid");
+    const res = await wx.cloud.callContainer({
+      "config": {
+        "env": "prod-0gws2yp30d12fdb1"
+      },
+      "path": "/api/queryWxUserInfo",
+      "header": {
+        "X-WX-SERVICE": "springboot-u4yq",
+        'content-type': 'application/json'
+      },
+      "method": "POST",
+      "data": {
+        "openid": openid
+      }
+    });
+    
+    this.setData({
+      nickName: res.data.data.nickname,
+      avatarUrl: res.data.data.headimgurl
+    })
+    return res.data.data;
+  },
+
 })

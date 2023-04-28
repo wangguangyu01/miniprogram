@@ -1,12 +1,19 @@
 <view class="page" data-weui-theme="{{theme}}">
   <mp-form-page > 
     <mp-form  id="form" rules="{{rules}}" models="{{formData}}">
+     <button  open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar" style="padding: 0;padding-left: 10px;">
+          <image wx:if="{{avatarUrl != ''}}" mode="aspectFit" class="avatar" src="{{avatarUrl}}" style="height: 180rpx;width: 180rpx; border-radius: 50%;"></image>
+          <text wx:if="{{avatarUrl == ''}}" 
+           style="font-weight: lighter; font-style: normal;color:rgb(124, 119, 119);">
+             获取头像
+           </text>
+        </button>
       <mp-cell show-error prop="wxNumber" title="微信号" ext-class="">
         <input bindinput="formInputChange" data-field="wxNumber" name="wxNumber" class="weui-input" placeholder="请输入能添加的微信号" 
         value="{{formData.wxNumber}}"/>
       </mp-cell>
       <mp-cell show-error prop="nickname" title="微信昵称" ext-class="">
-        <input bindinput="formInputChange" data-field="nickname" name="nickname" class="weui-input" placeholder="微信昵称" 
+        <input bindinput="formInputChange" data-field="nickname" type="nickname" name="nickname" class="weui-input" placeholder="微信昵称" 
         value="{{formData.nickname}}"/>
       </mp-cell>
       <!-- <mp-cell prop="qq" title="qq" ext-class="">

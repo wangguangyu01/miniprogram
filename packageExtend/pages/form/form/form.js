@@ -13,6 +13,7 @@ CustomPage({
     showTopTips: false,
     categories: '',
     uuid: '',
+    avatarUrl: '',
     radioItems: [{
         name: 'sex',
         value: '男',
@@ -21,8 +22,7 @@ CustomPage({
       {
         name: 'sex',
         value: '女'
-      }
-    ],
+      }],
     checkboxItems: [{
         name: 'standard is dealt for u.',
         value: '0',
@@ -324,7 +324,8 @@ CustomPage({
       'formData.city': this.data.formData.region[1],
       'formData.nickname': this.data.formData.nickname,
       'formData.height': this.data.formData.height,
-      'formData.height': this.data.formData.height
+      'formData.height': this.data.formData.height,
+      'formData.headimgurl': this.data.avatarUrl
     })
     console.log("json-->" + JSON.stringify(this.data.formData));
     const res = await wx.cloud.callContainer({
@@ -377,7 +378,14 @@ CustomPage({
         'formData.matingRequirement':res.data.data.matingRequirement,
         'formData.marriageSeekingFlag':res.data.data.marriageSeekingFlag,
         'formData.height':res.data.data.height,
-       'formData.weight':res.data.data.weight
+       'formData.weight':res.data.data.weight,
+       avatarUrl: res.data.data.avatarUrl
+    })
+  },
+  onChooseAvatar(e) {
+    const { avatarUrl } = e.detail 
+    this.setData({
+      avatarUrl,
     })
   }
 })
