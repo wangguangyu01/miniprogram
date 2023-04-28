@@ -379,7 +379,7 @@ CustomPage({
         'formData.marriageSeekingFlag':res.data.data.marriageSeekingFlag,
         'formData.height':res.data.data.height,
        'formData.weight':res.data.data.weight,
-       avatarUrl: res.data.data.avatarUrl
+       avatarUrl: res.data.data.headimgurl
     })
   },
   onChooseAvatar(e) {

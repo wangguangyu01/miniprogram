@@ -81,11 +81,11 @@ Page({
     let flag = wx.getStorageSync("hasOpenId");
     let openid = wx.getStorageSync("openid");
     if (flag) {
-      wx.redirectTo({
+      wx.navigateTo({
         url: '../../packageExtend/pages/base/article/article?openid=' + openid
       })
     } else {
-      wx.redirectTo({
+      wx.navigateTo({
         url: '../../packageExtend/pages/form/form/form?openid='+ openid
       })
     }
@@ -93,7 +93,7 @@ Page({
   updateInfo() {
     console.log("updateInfo 个人信息");
     let openid = wx.getStorageSync("openid");
-    wx.redirectTo({
+    wx.navigateTo({
       url: '../../packageExtend/pages/form/form/form?openid='+ openid
     })
   },
