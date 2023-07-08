@@ -146,6 +146,7 @@ CustomPage({
     let hasOpenId = wx.getStorageSync("hasOpenId");
     this.setData({
       'formData.openId': options.openid,
+      'formData.phone': '',
       categories: options.categories,
       uuid: options.uuid
     })
@@ -228,6 +229,9 @@ CustomPage({
     this.setData({
       [`formData.${field}`]: e.detail.value
     })
+    if (`${field}` === 'phone') {
+      this.loadData();
+    }
   },
   bindTimeChange(e) {
     this.setData({
@@ -359,7 +363,8 @@ CustomPage({
       },
       "method": "POST",
       "data": {
-        "openid": this.data.formData.openId
+        "openid": this.data.formData.openId,
+        "phone": this.data.formData.phone
       }
     });
     console.log(res.data.data);

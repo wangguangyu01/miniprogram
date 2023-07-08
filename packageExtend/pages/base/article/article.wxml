@@ -41,9 +41,15 @@
             {{wxUser.matingRequirement}}
           </view>
           <view class="weui-article__p" wx:for="{{wxUser.imagePaths}}" 
-            wx:for-item="itemUrl" wx:key="index" >
-            <image class="weui-article__img" 
+            wx:for-item="itemUrl" wx:key="index" catchtap="previewImage">
+            <image id="itemUrl_{{index}}" class="weui-article__img" 
             src="{{itemUrl.url}}" mode="aspectFit" style="height: 180px" lazy-load="true"/>
+          </view>
+          <view>
+             <text style="font-style: normal;font-weight: normal; font-size: 14px; color:rgb(146, 75, 75)">如果联系该用户，请扫描下方二维码联系管理，为您组织牵线活动</text>
+             <image
+             show-menu-by-longpress="{{true}}"  class="weui-article__img" 
+            src="https://7072-prod-0gws2yp30d12fdb1-1317513730.tcb.qcloud.la/adminUserImg/1682779344372.jpg" mode="aspectFit" style="height: 180px" lazy-load="true"/>
           </view>
         </view>
       </view>

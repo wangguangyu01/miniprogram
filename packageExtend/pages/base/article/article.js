@@ -46,5 +46,17 @@ CustomPage({
       })
     }
     return res.data.data;
+  },
+previewImage(e) {
+    let itemUrlId = e.target.id;
+    let index = itemUrlId.substring(itemUrlId.indexOf("_")+1);
+    console.log(index);
+    let imagePaths = this.data.wxUser.imagePaths;
+    let url = imagePaths[index];
+    console.log(url);
+    let current = url.url;
+    wx.previewImage({
+      urls: [current]
+    })
   }
 })

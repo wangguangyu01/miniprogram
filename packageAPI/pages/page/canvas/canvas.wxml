@@ -4,8 +4,8 @@
 <view class="container page" data-weui-theme="{{theme}}">
   <!-- <template is="head" data="{{title: 'createContext'}}"/> -->
 
-  <template is="head" data="{{title}}"/> 
-<!-- 
+  <template is="head" data="{{title}}" />
+  <!-- 
   <view class="page-body">
     <view class="page-section">
       <canvas class="canvas-element" canvas-id="canvas"></canvas>
@@ -27,11 +27,21 @@
           <image src="{{itemUrl}}" style="width: 60%;" mode="aspectFit"></image>
         </view>
       </block>
-      <block wx:if="{{moneyQRCode != null}}">
-        <view >
+      <block wx:if="{{moneyQRCode != ''}}">
+        <view>
           <image src="{{moneyQRCode}}" style="width: 60%;" mode="aspectFit"></image>
         </view>
       </block>
+      <block wx:if="{{moneyQRCode == ''}}">
+      <view>
+        <text style="font-style: normal;font-weight: normal; font-size: 14px; color:rgb(146, 75, 75)">
+        如果想参加活动，扫描下方二维码添加管理</text>
+        <image 
+        show-menu-by-longpress="{{true}}" class="weui-article__img" src="https://7072-prod-0gws2yp30d12fdb1-1317513730.tcb.qcloud.la/adminUserImg/1682779344372.jpg" mode="aspectFit" style="height: 180px" lazy-load="true" />
+      </view>
+    </block>
+     
+
     </view>
   </view>
   <template is="foot" />
