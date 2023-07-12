@@ -23,13 +23,18 @@
     </view>
     <view style="text-align:center;padding-top: 50px;">
       <block wx:if="{{fileUrlArr != null && fileUrlArr.length > 0}}">
-        <view wx:for="{{fileUrlArr}}" wx:key="index" wx:for-item="itemUrl">
-          <image src="{{itemUrl}}" style="width: 60%;" mode="aspectFit"></image>
+        <view wx:for="{{fileUrlArr}}" wx:key="index" 
+        wx:for-item="itemUrl"
+        catchtap="previewImage">
+          <image id="itemUrl_{{index}}" 
+           src="{{itemUrl}}" style="width: 60%;" mode="aspectFit"></image>
         </view>
       </block>
       <block wx:if="{{moneyQRCode != ''}}">
         <view>
-          <image src="{{moneyQRCode}}" style="width: 60%;" mode="aspectFit"></image>
+          <image src="{{moneyQRCode}}" style="width: 60%;"
+           mode="aspectFit" 
+           show-menu-by-longpress="{{true}}"  ></image>
         </view>
       </block>
       <block wx:if="{{moneyQRCode == ''}}">

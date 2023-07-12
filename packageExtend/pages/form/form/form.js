@@ -347,7 +347,7 @@ CustomPage({
     if (res.data.code === 0 || res.data.code === '0') {
       wx.setStorageSync('hasUser', true);
       wx.redirectTo({
-        url: '../uploader/uploader?openid=' + res.data.data.openid + "&categories=" + this.data.categories + "&uuid=" + this.data.uuid+"&hasUser=true"
+        url: '../identityuploader/identityuploader?openid=' + res.data.data.openid + "&categories=" + this.data.categories + "&uuid=" + this.data.uuid+"&hasUser=true"
       })
     }
   },

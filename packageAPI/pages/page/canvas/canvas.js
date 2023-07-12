@@ -144,6 +144,20 @@ Page({
           }
         }
     })
+  },
+  previewImage(e) {
+    let itemUrlId = e.target.id;
+    if (itemUrlId.includes('itemUrl')) {
+      let index = itemUrlId.substring(itemUrlId.indexOf("_")+1);
+      console.log(index);
+      let imagePaths = this.data.fileUrlArr;
+      console.log(imagePaths);
+      let current = imagePaths[index];
+      console.log(current);
+      wx.previewImage({
+        urls: [current]
+      })
+    }
+ 
   }
-  
 })

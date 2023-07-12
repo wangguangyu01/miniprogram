@@ -143,7 +143,7 @@ CustomPage({
       "data": {
         openId: app.globalData.openid,
         fileid: fileid,
-        type: 4
+        type: 8
       }
     });
   },
@@ -173,10 +173,20 @@ CustomPage({
    
   },
   gotoResource() {
-    console.log("fdgfd");
-    wx.reLaunch({
-      url: '../../../../page/cloud/index'
-    }) 
+    if (this.data.files.length == 0) {
+      wx.showToast({
+        title: '请上传学历证明',
+        icon: 'error',
+        duration: 2000
+      })
+    } else {
+      // wx.reLaunch({
+      //   url: '../../../../page/cloud/index'
+      // }) 
+      wx.redirectTo({
+        url: '../premisesPermit/premisesPermit?openid=' + app.globalData.openid + "&categories=" + this.data.categories + "&uuid=" + this.data.uuid+"&hasUser=true"
+      })
+    }
   },
   async loadData() {
     const res = await wx.cloud.callContainer({
@@ -190,17 +200,15 @@ CustomPage({
       },
       "method": "POST",
       "data": {
-        "openid": app.globalData.openid
+        "openid": app.globalData.openid,
       }
     });
-    console.log(res.data.data);
-    console.log(res.data.data.imagePaths);
     const fileList = [];
-    if (res.data.data.imagePaths !== null) {
-      for (let i = 0; i < res.data.data.imagePaths.length; i++) {
+    if (res.data.data.vehicleLicense !== null) {
+      for (let i = 0; i < res.data.data.vehicleLicense.length; i++) {
         let fileurl = {};
-         console.log(res.data.data.imagePaths[i].fileId);
-         fileurl.url = res.data.data.imagePaths[i].fileId;
+         console.log(res.data.data.vehicleLicense[i].fileId);
+         fileurl.url = res.data.data.vehicleLicense[i].fileId;
          fileList.push(fileurl);
      }
      this.setData({

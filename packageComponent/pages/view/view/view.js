@@ -57,4 +57,16 @@ Page({
     })
     return res.data.data;
   },
+  previewImage(e) {
+    let itemUrlId = e.target.id;
+    let index = itemUrlId.substring(itemUrlId.indexOf("_")+1);
+    console.log(index);
+    let imagePaths = this.data.fileUrlArr;
+    let url = imagePaths[index];
+    console.log(imagePaths);
+    let current = url;
+    wx.previewImage({
+      urls: [current]
+    })
+  }
 })

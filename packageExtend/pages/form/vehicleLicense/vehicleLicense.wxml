@@ -1,0 +1,28 @@
+<view class="page" data-weui-theme="{{theme}}">
+    <!-- <view class="page__hd">
+        <view class="page__title">Uploader</view>
+        <view class="page__desc">上传组件</view>
+    </view> -->
+    <view class="page__bd">
+        <mp-cells>
+            <mp-cell>
+                <mp-uploader bindfail="uploadError" bindsuccess="uploadSuccess" select="{{selectFile}}" upload="{{uplaodFile}}" 
+                binddelete = "binddelete"
+                files="{{files}}" max-count="1" title="行车证" tips="行车证"></mp-uploader> 
+            </mp-cell>
+        </mp-cells>
+    </view> 
+    <view slot="button">
+      <button class="weui-btn" type="primary" bindtap="gotoResource">确定</button>
+    </view>
+    <!-- <view>
+          <mp-uploader bindfail="uploadError" bindsuccess="uploadSuccess"
+          delete="true"
+          select="{{selectFile}}" 
+          upload="{{uplaodFile}}"
+          files="{{files}}" 
+           max-count="5" 
+           itle="生活照片上传" 
+           tips="生活照片上传"></mp-uploader> 
+    </view>  -->
+</view>

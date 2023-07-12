@@ -40,8 +40,10 @@
           <view class="weui-article__p">
             {{wxUser.matingRequirement}}
           </view>
+          
           <view class="weui-article__p" wx:for="{{wxUser.imagePaths}}" 
-            wx:for-item="itemUrl" wx:key="index" catchtap="previewImage">
+            wx:for-item="itemUrl" wx:key="index" catchtap="previewImage"
+            wx:if="{{wxUser.imagePaths !=null && wxUser.imagePaths.length > 0}}">
             <image id="itemUrl_{{index}}" class="weui-article__img" 
             src="{{itemUrl.url}}" mode="aspectFit" style="height: 180px" lazy-load="true"/>
           </view>

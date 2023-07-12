@@ -143,7 +143,7 @@ CustomPage({
       "data": {
         openId: app.globalData.openid,
         fileid: fileid,
-        type: 4
+        type: 9
       }
     });
   },
@@ -173,10 +173,13 @@ CustomPage({
    
   },
   gotoResource() {
-    console.log("fdgfd");
-    wx.reLaunch({
-      url: '../../../../page/cloud/index'
-    }) 
+  
+      // wx.reLaunch({
+      //   url: '../../../../page/cloud/index'
+      // }) 
+      wx.reLaunch({
+        url: '../../../../page/cloud/index'
+      }) 
   },
   async loadData() {
     const res = await wx.cloud.callContainer({
@@ -190,17 +193,15 @@ CustomPage({
       },
       "method": "POST",
       "data": {
-        "openid": app.globalData.openid
+        "openid": app.globalData.openid,
       }
     });
-    console.log(res.data.data);
-    console.log(res.data.data.imagePaths);
     const fileList = [];
-    if (res.data.data.imagePaths !== null) {
-      for (let i = 0; i < res.data.data.imagePaths.length; i++) {
+    if (res.data.data.credit !== null) {
+      for (let i = 0; i < res.data.data.credit.length; i++) {
         let fileurl = {};
-         console.log(res.data.data.imagePaths[i].fileId);
-         fileurl.url = res.data.data.imagePaths[i].fileId;
+         console.log(res.data.data.credit[i].fileId);
+         fileurl.url = res.data.data.credit[i].fileId;
          fileList.push(fileurl);
      }
      this.setData({
